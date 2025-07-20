@@ -8,7 +8,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // Changed from "bundler"
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -17,10 +17,18 @@
     "paths": {
       "@/*": ["./*"],
       "@/components/*": ["./components/*"],
-      "@/lib/*":       ["./lib/*"]
+      "@/lib/*": ["./lib/*"]
     },
     "plugins": [{"name": "next"}]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "scripts/fetchNews.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "scripts/fetchNews.ts",
+    "app/articles-by-country/page.jsx",
+    "prisma/seed.ts"
+  ],
   "exclude": ["node_modules"]
 }

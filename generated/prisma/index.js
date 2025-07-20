@@ -128,7 +128,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/jezelei/jezeleii/terrapulse/terrapulse/generated/prisma",
+      "value": "/Users/jezelei/jezeleii/terrapulse/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -142,7 +142,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/jezelei/jezeleii/terrapulse/terrapulse/prisma/schema.prisma",
+    "sourceFilePath": "/Users/jezelei/jezeleii/terrapulse/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -156,6 +156,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

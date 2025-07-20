@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { NewsProvider } from './contexts/NewsContext'
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Terrapulse Map",
+  title: "Terrapulse",
 };
 
 export default function RootLayout({
@@ -13,9 +14,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="h-full bg-background text-text">
-        {/* Essential for proper routing */}
         <main className="h-full">
-          {children}
+          <NewsProvider>
+             {children}
+          </NewsProvider>
         </main>
       </body>
     </html>

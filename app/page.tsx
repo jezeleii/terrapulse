@@ -1,4 +1,5 @@
 "use client";
+import React from 'react'
 import dynamic from 'next/dynamic';
 import MapLoading from './components/MapLoading';
 import { Header } from './components/Header';
@@ -10,15 +11,9 @@ const Map = dynamic(() => import('./components/Map'), {
 
 export default function MapPage() {
   return (
-   <>
-    <div className="flex flex-col min-h-screen">
-      <Header/>
-      <main className="flex-1">
-        <div className="relative w-full h-[calc(100vh-24rem)]">
-          <Map/>
-        </div>
-      </main>
+    <div className="relative w-full h-screen isolate">
+      <Map className="absolute inset-0 z-0" />
+      <Header className="absolute inset-x-0 top-0 z-10" />
     </div>
-   </>
   );
 }

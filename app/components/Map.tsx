@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import CountryPopup, { HoverInfo } from './CountryPopup';
+import { NewsCallout } from './NewsCallout';
 import { Source, Layer, MapRef, MapLayerMouseEvent } from 'react-map-gl';
 
 // Dynamically import the Map component
@@ -18,15 +19,16 @@ const initialView = {
   zoom: 0.01
 }
 
-export default function WorldMap() {
+export default function WorldMap({ className = '', ...props}) {
   const [primaryColor, setPrimaryColor] = useState<string>('');
+  const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
   useEffect(() => {
     const rootStyle = getComputedStyle(document.documentElement);
     const color = rootStyle.getPropertyValue('--color-primary').trim();
     setPrimaryColor(color || '#85e5e0');
   }, []);
 
-  const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
+  
   const lastCountry = useRef<string | null>(null);
 
   // Debounced hover handler to avoid jitter
@@ -85,7 +87,7 @@ export default function WorldMap() {
   } as const;
 
   return (
-    <div className="relative h-full w-full bg-[var(--color-background)] overflow-hidden">
+    <div className="relative h-full w-full bg-[var(--color-background)]">
       <ReactMap
         initialViewState={initialView}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
@@ -102,8 +104,18 @@ export default function WorldMap() {
         <Layer {...highlightLayer} />
         <CountryPopup hoverInfo={hoverInfo} />
         <Layer {...borderLayer} />
-        
       </ReactMap>
+      {hoverInfo && (
+        <NewsCallout
+          country={hoverInfo.country}
+          side="right"
+          isOpen={!!hoverInfo}
+          onClose={() => setHoverInfo(null)} 
+          children={undefined}        
+        >
+
+        </NewsCallout>
+      )}
     </div>
   );
 }
