@@ -112,6 +112,7 @@ export const NewsSearch = ({ newsItems, onSearch, className }: NewsSearchProps) 
               z-20
               max-h-60
               overflow-y-auto
+              scrollbar-primary
             ">
               <ul className="pb-2"> {/* Added bottom padding */}
                 {suggestions.map((suggestion, i) => (
