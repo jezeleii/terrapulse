@@ -22,13 +22,15 @@ const initialView = {
 export default function WorldMap({ className = '', ...props}) {
   const [primaryColor, setPrimaryColor] = useState<string>('');
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
+  const [clickedInfo, setClickedInfo] = useState<HoverInfo | null>(null);
+  const mapRef = useRef<MapRef>(null);
+  
   useEffect(() => {
     const rootStyle = getComputedStyle(document.documentElement);
     const color = rootStyle.getPropertyValue('--color-primary').trim();
     setPrimaryColor(color || '#85e5e0');
   }, []);
 
-  
   const lastCountry = useRef<string | null>(null);
 
   // Debounced hover handler to avoid jitter
@@ -45,8 +47,31 @@ export default function WorldMap({ className = '', ...props}) {
     }
   }, []);
 
+  const handleClick = useCallback((event: MapLayerMouseEvent) => {
+    const feature = event.features?.[0];
+    const name = feature?.properties?.name_en; 
+    if (feature && name) {
+      // If clicking the same country again, deselect it
+      if (clickedInfo?.country === name) {
+        setClickedInfo(null);
+      } else {
+        setClickedInfo({
+          country: name, 
+          longitude: event.lngLat.lng, 
+          latitude: event.lngLat.lat,
+        });
+      }
+    } else {
+      // Clicked outside a country - clear selection
+      setClickedInfo(null);
+    }
+  }, [clickedInfo]);
+
   const onMouseMove = (e: MapLayerMouseEvent) => handleHover(e);
-  const onMouseLeave = () => { lastCountry.current = null; setHoverInfo(null); };
+  const onMouseLeave = () => { 
+    lastCountry.current = null; 
+    setHoverInfo(null); 
+  };
 
   // Layer definitions
   const countrySource = {
@@ -73,9 +98,10 @@ export default function WorldMap({ className = '', ...props}) {
       'fill-opacity': 0.3,
       'fill-outline-color': '#ffffff'
     },
-    filter: hoverInfo
-      ? ['==', ['get', 'name_en'], hoverInfo.country]
-      : ['==', ['get', 'name_en'], '']
+    filter: ['any',
+      hoverInfo ? ['==', ['get', 'name_en'], hoverInfo.country] : ['==', ['get', 'name_en'], ''],
+      clickedInfo ? ['==', ['get', 'name_en'], clickedInfo.country] : ['==', ['get', 'name_en'], '']
+    ]
   } as any;
 
   const borderLayer = {
@@ -87,17 +113,19 @@ export default function WorldMap({ className = '', ...props}) {
   } as const;
 
   return (
-    <div className="relative h-full w-full bg-[var(--color-background)]">
+    <div className="relative h-full w-full bg-[var(--color-background)] overflow-hidden">
       <ReactMap
+        ref={mapRef}
         initialViewState={initialView}
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         interactiveLayerIds={[fillLayer.id]}
         scrollZoom={true}
         dragPan={true}
+        onClick={handleClick}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         renderWorldCopies={false}
-
+        doubleClickZoom={false} 
       >
         <Source {...countrySource} />
         <Layer {...fillLayer} />
@@ -105,6 +133,7 @@ export default function WorldMap({ className = '', ...props}) {
         <CountryPopup hoverInfo={hoverInfo} />
         <Layer {...borderLayer} />
       </ReactMap>
+      
       {hoverInfo && (
         <NewsCallout
           country={hoverInfo.country}
@@ -112,9 +141,17 @@ export default function WorldMap({ className = '', ...props}) {
           isOpen={!!hoverInfo}
           onClose={() => setHoverInfo(null)} 
           children={undefined}        
-        >
-
-        </NewsCallout>
+        />
+      )}
+      
+      {clickedInfo && (
+        <NewsCallout
+          country={clickedInfo.country}
+          side="right"
+          isOpen={!!clickedInfo}
+          onClose={() => setClickedInfo(null)}
+          children={undefined}
+        />
       )}
     </div>
   );
