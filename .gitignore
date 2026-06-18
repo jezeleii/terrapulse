@@ -1,13 +1,11 @@
 # Node dependencies
-/node_modules/
+node_modules/
 
 # Next.js build output
-/.next/
-/out/
-/build/
-
-# Static export directory
-/out/
+.next/
+frontend/.next/
+frontend/out/
+frontend/build/
 
 # Environment variables
 .env
@@ -23,14 +21,14 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Test coverage
-/coverage/
+coverage/
 
 # IDE/editor directories
 .vscode/
 .idea/
 
-# Yarn Plug’n’Play files (if using Yarn 2+)
-/.pnp.*
+# Yarn Plug’n’Play files
+.pnp.*
 .pnp.js
 
 # macOS system files
@@ -38,3 +36,13 @@ pnpm-debug.log*
 
 # Windows system files
 Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# TypeScript build info
+*.tsbuildinfo

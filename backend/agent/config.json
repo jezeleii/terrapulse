@@ -1,0 +1,12 @@
+{
+  "thresholds": {
+    "uptake_p25": 0.25,
+    "uptake_p75": 0.75,
+    "ratio_decline_delta": -0.1,
+    "ratio_surge_delta": 0.1,
+    "issuance_surge_pct": 0.5,
+    "retirement_surge_pct": 0.5,
+    "stagnant_min_issued": 1,
+    "peer_rank_jump_pct": 20
+  }
+}
