@@ -138,6 +138,10 @@ const config = {
         "fromEnvVar": null,
         "value": "darwin-arm64",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -164,8 +168,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Article {\n  id        String   @id @default(cuid())\n  title     String\n  snippet   String\n  url       String   @unique\n  date      DateTime\n  tags      String[]\n  countries String[]\n}\n",
-  "inlineSchemaHash": "eead177edfddf1cbfead3a712d29f5b77b6a6719100f18862f9b2508552cee4b",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Article {\n  id        String   @id @default(cuid())\n  title     String\n  snippet   String\n  url       String   @unique\n  date      DateTime\n  tags      String[]\n  countries String[]\n}\n",
+  "inlineSchemaHash": "5c32975a788b87f382d842eb671c1b836451a9e41be64d4fbdee1b6db9ad6bdc",
   "copyEngine": true
 }
 config.dirname = '/'

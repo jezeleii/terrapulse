@@ -139,6 +139,17 @@ html, body, #__next {
   }
 }
 
+.vcm-map-tooltip .mapboxgl-popup-content {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+.vcm-map-tooltip .mapboxgl-popup-tip {
+  display: none;
+}
+
 @layer utilities {
   .scrollbar-primary::-webkit-scrollbar {
     @apply w-2 h-2;
