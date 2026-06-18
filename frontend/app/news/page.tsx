@@ -1,5 +1,7 @@
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 interface ArticlePreview {
   title: string;
   snippet: string;
@@ -12,19 +14,16 @@ interface GroupedArticles {
   [country: string]: ArticlePreview[];
 }
 
-export const revalidate = 3600;
-
 export default async function ArticlesByCountryPage() {
-  const articles = await prisma.article.findMany({
-    select: {
-      title: true,
-      snippet: true,
-      url: true,
-      date: true,
-      countries: true,
-    },
-    orderBy: { date: 'desc' },
-  }) as ArticlePreview[];
+  let articles: ArticlePreview[] = [];
+  try {
+    articles = (await prisma.article.findMany({
+      select: { title: true, snippet: true, url: true, date: true, countries: true },
+      orderBy: { date: 'desc' },
+    })) as ArticlePreview[];
+  } catch {
+    // DB unavailable — render empty state
+  }
 
   const grouped = articles.reduce<GroupedArticles>((map, article) => {
     const keys = article.countries.length ? article.countries : ['Uncategorized'];
